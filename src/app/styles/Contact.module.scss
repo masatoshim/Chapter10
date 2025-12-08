@@ -1,0 +1,72 @@
+.container {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+}
+
+.parameter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.parameterTitle {
+  width: 240px;
+}
+
+.wFull {
+  width: 100%;
+}
+
+.inputTypeText {
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputTypeTextArea {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.errorText {
+  font-size: 0.875rem;
+  color: #B91C1C;
+}
+
+.centerRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.submitButton {
+  background-color: #1F2937;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-right: 1rem;
+}
+
+.clearButton {
+  background-color: #E5E7EB;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+}
