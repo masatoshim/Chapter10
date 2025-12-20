@@ -1,27 +1,11 @@
 "use client";
 
 import classes from '@/styles/Detail.module.scss'
-import { useState, useEffect } from 'react';
-import { MicroCmsPost } from '@/app/_types/MicroCmsPost'; 
-import { useParams } from "next/navigation";
-import { fetchPost } from "@/app/_lib/getters";
 import Image from 'next/image';
+import { usePost } from '../_hooks/usePost';
 
 export default function DetailPage() {
-  const { id } = useParams();
-  const [post, setPost] = useState<MicroCmsPost | null>(null);
-  const [fetched, setFetched] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-
-  // APIでpostを取得する処理をuseEffectで実行します。
-  useEffect(() => {
-    setFetched(false);
-    const postId = Array.isArray(id) ? id[0] : id; // string[] の場合は先頭を使用
-    fetchPost(postId)
-      .then(result => setPost(result))
-      .catch(err => setError(err.message))
-      .finally(() => setFetched(true));
-  }, [id]);
+  const { post, fetched, error } = usePost();
 
   if (!fetched) return <div>読み込み中...</div>;
   if (!post) return <div>投稿が見つかりません</div>;

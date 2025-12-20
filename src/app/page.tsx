@@ -1,25 +1,11 @@
 "use client";
 
 import classes from '@/styles/Home.module.scss'
-import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { MicroCmsPost } from '@/app/_types/MicroCmsPost'; 
-import { fetchPosts } from "@/app/_lib/getters";
-
+import { usePosts } from './_hooks/usePosts';
 
 export default function HomePage() {
-  const [posts, setPosts] = useState<MicroCmsPost[]>([]);
-  const [fetched, setFetched] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-
-  // APIでpostsを取得する処理をuseEffectで実行します。
-  useEffect(() => {
-    setFetched(false);
-    fetchPosts()
-      .then(result => setPosts(result))
-      .catch(err => setError(err.message))
-      .finally(() => setFetched(true));
-  }, []);
+  const { posts, fetched, error } = usePosts();
 
   if (!fetched) return <div>読み込み中...</div>;
   if (posts.length === 0) return <div>投稿が見つかりません</div>;
