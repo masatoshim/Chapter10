@@ -3,12 +3,12 @@
 import classes from '@/styles/Home.module.scss'
 import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { type PostType } from '@/lib/types'; 
-import { fetchPosts } from "@/lib/getters";
+import { MicroCmsPost } from '@/app/_types/MicroCmsPost'; 
+import { fetchPosts } from "@/app/_lib/getters";
 
 
 export default function HomePage() {
-  const [posts, setPosts] = useState<PostType[]>([]);
+  const [posts, setPosts] = useState<MicroCmsPost[]>([]);
   const [fetched, setFetched] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -16,7 +16,7 @@ export default function HomePage() {
   useEffect(() => {
     setFetched(false);
     fetchPosts()
-      .then(result => setPosts(result.posts))
+      .then(result => setPosts(result))
       .catch(err => setError(err.message))
       .finally(() => setFetched(true));
   }, []);
@@ -37,7 +37,7 @@ export default function HomePage() {
                     <div className={classes.postInfo}>
                       <div className={classes.postDate}>{ new Date(post.createdAt).toLocaleDateString('ja-JP') }</div>
                       <div className={classes.postCategories}>
-                        { post.categories.map((category, index) => <div className={classes.postCategory} key={`${post.id}-${index}`}>{category}</div>) }
+                        { post.categories.map((category, index) => <div className={classes.postCategory} key={`${post.id}-${index}`}>{category.name}</div>) }
                       </div>
                     </div>
                     <p className={classes.postTitle}>{ post.title }</p>
