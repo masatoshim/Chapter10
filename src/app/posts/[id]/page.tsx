@@ -2,10 +2,12 @@
 
 import classes from '@/styles/Detail.module.scss'
 import Image from 'next/image';
-import { usePost } from '../_hooks/usePost';
+import { useParams } from 'next/navigation';
+import { usePost } from '@/app/_hooks/usePost';
 
 export default function DetailPage() {
-  const { post, fetched, error } = usePost();
+  const { id } = useParams<{ id: string }>();
+  const { post, fetched, error } = usePost(id);
 
   if (!fetched) return <div>読み込み中...</div>;
   if (!post) return <div>投稿が見つかりません</div>;
