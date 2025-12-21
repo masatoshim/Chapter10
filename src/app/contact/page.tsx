@@ -3,9 +3,9 @@
 import classes from '@/app/contact/_styles/Contact.module.scss'
 import { useForm, UseFormReturn  } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserSchemaType, ContactType } from '@/app/contact/_types/types';
+import { UserSchemaType } from '@/app/contact/_types/UserSchemaType';
+import { Contact } from '@/app/contact/_types/Contact';
 import { z } from 'zod';
-
 
 export default function ContactPage() {
 
@@ -19,7 +19,7 @@ export default function ContactPage() {
     resolver: zodResolver(userSchema),
   });
 
-  const onsubmit: (data: ContactType) => Promise<void> = async (data) => {
+  const onsubmit: (data: Contact) => Promise<void> = async (data) => {
     try {
       const response: Response = await fetch('https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts', {
         method: 'POST',
