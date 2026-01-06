@@ -1,6 +1,6 @@
 "use client";
 
-import classes from '@/styles/Detail.module.scss'
+import classes from '@/app/_styles/Detail.module.scss'
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { usePost } from '@/app/_hooks/usePost';

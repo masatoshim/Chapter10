@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MicroCmsPost } from '@/app/_types/MicroCmsPost'; 
-import { fetchPosts } from "@/app/_lib/getters";
+import { fetchPosts } from "@/app/_libs/getters";
 
 export const usePosts = () => {
   const [posts, setPosts] = useState<MicroCmsPost[]>([]);

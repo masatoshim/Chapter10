@@ -1,6 +1,6 @@
 "use client";
 
-import classes from '@/styles/Home.module.scss'
+import classes from '@/app/_styles/Home.module.scss'
 import Link from "next/link";
 import { usePosts } from '@/app/_hooks/usePosts';
 
