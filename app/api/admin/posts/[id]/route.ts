@@ -1,0 +1,110 @@
+import { prisma } from '@/app/_libs/prisma'
+import { NextResponse } from 'next/server'
+
+// 投稿APIのレスポンスの型
+export type PostIndexResponse = {
+  post: {
+    id: number
+    title: string
+    content: string
+    thumbnailUrl: string
+    createdAt: Date
+    updatedAt: Date
+    postCategories: {
+      category: {
+        id: number
+        name: string
+      }
+    }[]
+  } | null
+}
+
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = Number(params.id);
+    const post = await prisma.post.findUnique({
+      where: { id: id },
+      include: {
+        postCategories: {
+          include: {
+            category: {
+              select: { id: true, name: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!post) {
+      return NextResponse.json({ message: "Post not found" }, { status: 404 });
+    }
+    return NextResponse.json<PostIndexResponse>({ post }, { status: 200 })
+  } catch (error) {
+    if (error instanceof Error)
+      return NextResponse.json({ message: error.message }, { status: 400 })
+  }
+}
+
+export const PUT = async (
+  request: Request,
+  { params }: { params: { id: string } }
+) => {
+  try {
+    const id = Number(params.id)
+    const body = await request.json()
+    const { title, content, thumbnailUrl, categoryIds } = body
+
+    const post = await prisma.post.update({
+      where: { id },
+      data: {
+        title,
+        content,
+        thumbnailUrl,
+        postCategories: {
+          // 既存の関連を一度すべて削除して作り直す
+          deleteMany: {}, 
+          create: categoryIds.map((id: number) => ({
+            categoryId: id,
+          })),
+        },
+      },
+      include: {
+        postCategories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    })
+
+    return NextResponse.json({ message: "OK", post }, { status: 200 })
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 400 })
+    }
+  }
+}
+
+export const DELETE = async (
+  _request: Request,
+  { params }: { params: { id: string } }
+) => {
+  try {
+    const id = Number(params.id)
+
+    // データベースから削除を実行
+    // ※ onDelete: Cascade の設定により、紐づく PostCategory も自動削除
+    const post = await prisma.post.delete({
+      where: { id },
+    })
+
+    return NextResponse.json({ message: "削除成功", post }, { status: 200 })
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 400 })
+    }
+  }
+}
