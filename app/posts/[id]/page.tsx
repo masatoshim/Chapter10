@@ -16,12 +16,12 @@ export default function DetailPage() {
   return (
     <div className={classes.container}>
       <div className={classes.post}>
-        <div className={classes.postImage}><Image src={ post.thumbnail.url } alt="" fill /></div>
+        <div className={classes.postImage}><Image src={ post.thumbnailUrl } alt="" fill /></div>
         <div className={classes.postContent}>
           <div className={classes.postInfo}>
             <div className={classes.postDate}>{ new Date(post.createdAt).toLocaleDateString('ja-JP') }</div>
             <div className={classes.postCategories}>
-              { post.categories.map((category, index) => <div className={classes.postCategory} key={`${post.id}-${index}`}>{category.name}</div>) }
+              { post.postCategories.map((category, index) => <div className={classes.postCategory} key={`${post.id}-${index}`}>{category.category.name}</div>) }
             </div>
           </div>
           <h1 className={classes.postTitle}>{ post.title }</h1>

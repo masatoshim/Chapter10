@@ -20,11 +20,12 @@ export type PostIndexResponse = {
 }
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const id = Number(params.id);
+    const { id: idStr } = await params;
+    const id = Number(idStr);
     const post = await prisma.post.findUnique({
       where: { id: id },
       include: {

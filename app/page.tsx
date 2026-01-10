@@ -23,7 +23,7 @@ export default function HomePage() {
                     <div className={classes.postInfo}>
                       <div className={classes.postDate}>{ new Date(post.createdAt).toLocaleDateString('ja-JP') }</div>
                       <div className={classes.postCategories}>
-                        { post.categories.map((category, index) => <div className={classes.postCategory} key={`${post.id}-${index}`}>{category.name}</div>) }
+                        { post.postCategories.map((category, index) => <div className={classes.postCategory} key={`${post.id}-${index}`}>{category.category.name}</div>) }
                       </div>
                     </div>
                     <p className={classes.postTitle}>{ post.title }</p>

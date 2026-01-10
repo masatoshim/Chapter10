@@ -13,10 +13,11 @@ export type CategoryResponse = {
 
 export async function GET(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const id = Number(params.id)
+    const { id: idStr } = await params;
+    const id = Number(idStr);
 
     const category = await prisma.category.findUnique({
       where: { id },
@@ -34,14 +35,21 @@ export async function GET(
   }
 }
 
+// カテゴリーの更新時に送られてくるリクエストのbodyの型
+export type UpdateCategoryRequestBody = {
+  name: string
+}
+
 export const PUT = async (
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
+
 ) => {
   try {
-    const id = Number(params.id)
+    const { id: idStr } = await params;
+    const id = Number(idStr);
     const body = await request.json()
-    const { name } = body
+    const { name }: UpdateCategoryRequestBody = body
 
     if (!name) {
       return NextResponse.json({ message: "カテゴリー名は必須です" }, { status: 400 })
@@ -64,10 +72,12 @@ export const PUT = async (
 
 export const DELETE = async (
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
+
 ) => {
   try {
-    const id = Number(params.id)
+    const { id: idStr } = await params;
+    const id = Number(idStr);
 
     // カテゴリーの削除を実行
     // ※ onDelete: Cascade により、PostCategory の紐付けレコードも自動削除される

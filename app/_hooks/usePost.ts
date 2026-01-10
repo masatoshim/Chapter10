@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { MicroCmsPost } from '@/app/_types/MicroCmsPost'; 
+import { PostIndexResponse } from '@/app/api/posts/[id]/route'
 import { fetchPost } from "@/app/_libs/getters";
 
 export const usePost = (id: string) => {
-  const [post, setPost] = useState<MicroCmsPost | null>(null);
+  const [post, setPost] = useState<PostIndexResponse['post'] | null>(null);
   const [fetched, setFetched] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -11,7 +11,7 @@ export const usePost = (id: string) => {
   useEffect(() => {
     setFetched(false);
     fetchPost(id)
-      .then(result => setPost(result))
+      .then(result => setPost(result.post))
       .catch(err => setError(err.message))
       .finally(() => setFetched(true));
   }, [id]);

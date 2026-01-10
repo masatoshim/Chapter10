@@ -20,11 +20,12 @@ export type PostIndexResponse = {
 }
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const id = Number(params.id);
+    const { id: idStr } = await params;
+    const id = Number(idStr);
     const post = await prisma.post.findUnique({
       where: { id: id },
       include: {
@@ -48,14 +49,23 @@ export async function GET(
   }
 }
 
+// 記事の更新時に送られてくるリクエストのbodyの型
+export type UpdatePostRequestBody = {
+  title: string
+  content: string
+  categoryIds: number []
+  thumbnailUrl: string
+}
+
 export const PUT = async (
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
-    const id = Number(params.id)
+    const { id: idStr } = await params;
+    const id = Number(idStr);
     const body = await request.json()
-    const { title, content, thumbnailUrl, categoryIds } = body
+    const { title, content, thumbnailUrl, categoryIds }: UpdatePostRequestBody = body
 
     const post = await prisma.post.update({
       where: { id },
@@ -90,10 +100,11 @@ export const PUT = async (
 
 export const DELETE = async (
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
-    const id = Number(params.id)
+    const { id: idStr } = await params;
+    const id = Number(idStr);
 
     // データベースから削除を実行
     // ※ onDelete: Cascade の設定により、紐づく PostCategory も自動削除

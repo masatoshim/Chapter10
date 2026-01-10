@@ -26,9 +26,19 @@ export const GET = async () => {
   }
 }
 
+// カテゴリーの作成時に送られてくるリクエストのbodyの型
+export type CreateCategoryRequestBody = {
+  name: string
+}
+
+// カテゴリー作成APIのレスポンスの型
+export type CreateCategoryResponse = {
+  id: number
+}
+
 export const POST = async (request: Request) => {
   try {
-    const body = await request.json()
+    const body: CreateCategoryRequestBody = await request.json()
     const { name } = body
 
     if (!name) {
@@ -41,7 +51,9 @@ export const POST = async (request: Request) => {
       },
     })
 
-    return NextResponse.json({ category }, { status: 201 })
+    return NextResponse.json<CreateCategoryResponse>({
+      id: category.id,
+    })
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ message: error.message }, { status: 400 })

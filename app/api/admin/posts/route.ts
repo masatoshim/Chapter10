@@ -46,9 +46,22 @@ export const GET = async () => {
   }
 }
 
+// 投稿作成時に送られてくるリクエストのbodyの型
+export type CreatePostRequestBody = {
+  title: string
+  content: string
+  categoryIds: number[]
+  thumbnailUrl: string
+}
+
+// 投稿作成APIのレスポンスの型
+export type CreatePostResponse = {
+  id: number
+}
+
 export const POST = async (request: Request) => {
   try {
-    const body = await request.json()
+    const body: CreatePostRequestBody  = await request.json()
     const { title, content, thumbnailUrl, categoryIds } = body
 
     const post = await prisma.post.create({
@@ -62,16 +75,11 @@ export const POST = async (request: Request) => {
           })),
         },
       },
-      include: {
-        postCategories: {
-          include: {
-            category: true,
-          },
-        },
-      },
     })
 
-    return NextResponse.json({ post }, { status: 201 })
+    return NextResponse.json<CreatePostResponse>({
+      id: post.id,
+    })
 
   } catch (error) {
     if (error instanceof Error) {
