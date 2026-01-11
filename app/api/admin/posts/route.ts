@@ -2,21 +2,21 @@ import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
 // 記事一覧APIのレスポンスの型
-export type PostsIndexResponse = {
+export interface PostsIndexResponse {
   posts: {
-    id: number
-    title: string
-    content: string
-    thumbnailUrl: string
-    createdAt: Date
-    updatedAt: Date
+    id: number;
+    title: string;
+    content: string;
+    thumbnailUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
     postCategories: {
       category: {
-        id: number
-        name: string
-      }
-    }[]
-  }[]
+        id: number;
+        name: string;
+      };
+    }[];
+  }[];
 }
 
 export const GET = async () => {
@@ -47,16 +47,16 @@ export const GET = async () => {
 }
 
 // 記事作成時に送られてくるリクエストのbodyの型
-export type CreatePostRequestBody = {
-  title: string
-  content: string
-  categoryIds: number[]
-  thumbnailUrl: string
+export interface CreatePostRequestBody {
+  title: string;
+  content: string;
+  categoryIds: number[];
+  thumbnailUrl: string;
 }
 
 // 記事作成APIのレスポンスの型
-export type CreatePostResponse = {
-  id: number
+export interface CreatePostResponse {
+  id: number;
 }
 
 export const POST = async (request: Request) => {

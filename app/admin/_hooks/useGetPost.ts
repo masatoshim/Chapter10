@@ -7,7 +7,6 @@ export const useGetPost = (id: string) => {
   const [fetched, setFetched] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  // APIでpostを取得する処理をuseEffectで実行
   useEffect(() => {
     setFetched(false);
     fetchAdminPost(id)

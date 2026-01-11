@@ -13,7 +13,7 @@ export default function CategoryEditPage() {
   const [name, setName] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  // カテゴリー操作用フック
+  // カテゴリー情報操作用フック
   const { id } = useParams<{ id: string }>();
   const { category, fetched } = useGetCategory(id);
   const { updateCategory, isUpdating } = useUpdateCategory(id);

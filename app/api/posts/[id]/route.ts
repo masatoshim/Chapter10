@@ -2,21 +2,21 @@ import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
 // 記事APIのレスポンスの型
-export type PostIndexResponse = {
+export interface PostIndexResponse {
   post: {
-    id: number
-    title: string
-    content: string
-    thumbnailUrl: string
-    createdAt: Date
-    updatedAt: Date
+    id: number;
+    title: string;
+    content: string;
+    thumbnailUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
     postCategories: {
       category: {
-        id: number
-        name: string
-      }
-    }[]
-  } | null
+        id: number;
+        name: string;
+      };
+    }[];
+  } | null;
 }
 
 export async function GET(

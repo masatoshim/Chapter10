@@ -2,13 +2,13 @@ import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
 // カテゴリー一覧APIのレスポンスの型
-export type CategoriesIndexResponse = {
+export interface CategoriesIndexResponse {
   categories: {
-    id: number
-    name: string
-    createdAt: Date
-    updatedAt: Date
-  }[]
+    id: number;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
 }
 
 export const GET = async () => {
@@ -27,13 +27,13 @@ export const GET = async () => {
 }
 
 // カテゴリーの作成時に送られてくるリクエストのbodyの型
-export type CreateCategoryRequestBody = {
-  name: string
+export interface CreateCategoryRequestBody {
+  name: string;
 }
 
 // カテゴリー作成APIのレスポンスの型
-export type CreateCategoryResponse = {
-  id: number
+export interface CreateCategoryResponse {
+  id: number;
 }
 
 export const POST = async (request: Request) => {

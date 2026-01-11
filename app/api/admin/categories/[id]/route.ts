@@ -2,13 +2,13 @@ import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
 // カテゴリー詳細APIのレスポンスの型
-export type CategoryIndexResponse = {
+export interface CategoryIndexResponse {
   category: {
-    id: number
-    name: string
-    createdAt: Date
-    updatedAt: Date
-  } | null
+    id: number;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
 }
 
 export async function GET(
@@ -36,8 +36,8 @@ export async function GET(
 }
 
 // カテゴリーの更新時に送られてくるリクエストのbodyの型
-export type UpdateCategoryRequestBody = {
-  name: string
+export interface UpdateCategoryRequestBody {
+  name: string;
 }
 
 export const PUT = async (
