@@ -112,7 +112,7 @@ export const DELETE = async (
       where: { id },
     })
 
-    return NextResponse.json({ message: "削除成功", post }, { status: 200 })
+    return NextResponse.json({ message: "OK", post }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ message: error.message }, { status: 400 })

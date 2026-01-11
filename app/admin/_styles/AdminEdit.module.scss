@@ -1,0 +1,67 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-start;
+  
+  gap: 12px;
+  
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.updateBtn, .deleteBtn {
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.updateBtn {
+  background-color: #007bff;
+  color: white;
+  &:hover { background-color: #0056b3; }
+}
+
+.deleteBtn {
+  background-color: #dc3545; // 削除は赤
+  color: white;
+  &:hover { background-color: #a71d2a; }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+    }
+  }
+}

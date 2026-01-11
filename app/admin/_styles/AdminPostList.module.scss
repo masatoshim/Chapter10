@@ -1,0 +1,74 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #eee;
+}
+
+.createBtn {
+  display: inline-block;
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s, transform 0.1s;
+
+  // ホバー（マウスを乗せた時）の処理
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  // クリックした瞬間の反応
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #333333;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.postList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  // 縦に並べるために flex-direction を column に設定
+  display: flex;
+  flex-direction: column;
+
+  li {
+    // ② li要素の下に線を引き、余白を調整する
+    border-bottom: 1px solid #eee; // 薄いグレーの線
+    a {
+      text-decoration: none;
+      color: #333;
+      display: block;        // クリック範囲を横いっぱいに広げる
+      padding: 16px 8px;     // 上下の余白を広げて押しやすくする
+    }
+  }
+}
+
+.postContent {
+  display: flex;
+  flex-direction: column; // 縦に並べる
+  gap: 2px; // タイトルと日付の距離を調整
+}
+
+.postTitle {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.postDate {
+  font-size: 0.85rem;
+  color: #888;
+}
