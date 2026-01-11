@@ -1,14 +1,14 @@
 "use client";
 
-import classes from '@/app/admin/_styles/AdminPostList.module.scss'
+import classes from '@/app/admin/_styles/AdminList.module.scss'
 import Link from "next/link";
-import { useAdminPosts } from '@/app/admin/_hooks/useAdminPosts';
+import { useGetPosts } from '@/app/admin/_hooks/useGetPosts';
 
 export default function AdminPostListPage() {
-  const { posts, fetched, error } = useAdminPosts();
+  const { posts, fetched, error } = useGetPosts();
 
   if (!fetched) return <div>読み込み中...</div>;
-  if (posts.length === 0) return <div>投稿が見つかりません</div>;
+  if (posts.length === 0) return <div>記事が見つかりません</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -22,13 +22,13 @@ export default function AdminPostListPage() {
         </Link>
       </header>
       <div>
-        <ul className={classes.postList}>
+        <ul className={classes.contentList}>
           {posts.map((post) => (
-            <li key={post.id} className={classes.postItem}>
+            <li key={post.id}>
               <Link href={`/admin/posts/${post.id}`} className={classes.link}>
-                <div className={classes.postContent}>
-                  <span className={classes.postTitle}>{post.title}</span>
-                  <span className={classes.postDate}>
+                <div className={classes.content}>
+                  <span className={classes.contentTitle}>{post.title}</span>
+                  <span className={classes.contentDate}>
                     {new Date(post.createdAt).toLocaleDateString('ja-JP')}
                   </span>
                 </div>

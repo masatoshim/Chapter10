@@ -17,12 +17,10 @@
   border-radius: 6px;
   transition: background-color 0.2s, transform 0.1s;
 
-  // ホバー（マウスを乗せた時）の処理
   &:hover {
     background-color: #0056b3;
   }
 
-  // クリックした瞬間の反応
   &:active {
     transform: scale(0.98);
   }
@@ -36,7 +34,7 @@
   margin: 0;
 }
 
-.postList {
+.contentList {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -45,30 +43,30 @@
   flex-direction: column;
 
   li {
-    // ② li要素の下に線を引き、余白を調整する
-    border-bottom: 1px solid #eee; // 薄いグレーの線
+    // li要素の下に線を引き、余白を調整
+    border-bottom: 1px solid #eee;
     a {
       text-decoration: none;
       color: #333;
-      display: block;        // クリック範囲を横いっぱいに広げる
-      padding: 16px 8px;     // 上下の余白を広げて押しやすくする
+      display: block;
+      padding: 16px 8px;
     }
   }
 }
 
-.postContent {
+.content {
   display: flex;
   flex-direction: column; // 縦に並べる
-  gap: 2px; // タイトルと日付の距離を調整
+  gap: 2px;
 }
 
-.postTitle {
+.contentTitle {
   font-weight: bold;
   font-size: 1.1rem;
   color: #333;
 }
 
-.postDate {
+.contentDate {
   font-size: 0.85rem;
   color: #888;
 }

@@ -8,7 +8,7 @@ export default function HomePage() {
   const { posts, fetched, error } = usePosts();
 
   if (!fetched) return <div>読み込み中...</div>;
-  if (posts.length === 0) return <div>投稿が見つかりません</div>;
+  if (posts.length === 0) return <div>記事が見つかりません</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (

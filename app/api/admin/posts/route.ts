@@ -1,7 +1,7 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
-// 投稿一覧APIのレスポンスの型
+// 記事一覧APIのレスポンスの型
 export type PostsIndexResponse = {
   posts: {
     id: number
@@ -46,7 +46,7 @@ export const GET = async () => {
   }
 }
 
-// 投稿作成時に送られてくるリクエストのbodyの型
+// 記事作成時に送られてくるリクエストのbodyの型
 export type CreatePostRequestBody = {
   title: string
   content: string
@@ -54,7 +54,7 @@ export type CreatePostRequestBody = {
   thumbnailUrl: string
 }
 
-// 投稿作成APIのレスポンスの型
+// 記事作成APIのレスポンスの型
 export type CreatePostResponse = {
   id: number
 }

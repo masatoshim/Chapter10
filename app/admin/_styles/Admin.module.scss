@@ -2,6 +2,7 @@
   display: flex;
   align-items: flex-start;
   min-height: calc(100vh - 70px);
+  overflow: clip;
 }
 
 .sidebar {
@@ -12,8 +13,8 @@ width: 240px;
   
   /* 固定の設定 */
   position: sticky; 
-  top: 70px;           // 画面の一番上に固定
-  height: calc(100vh - 112px);    // サイドバー自体の高さを画面ぴったりにする
+  top: 70px;
+  height: calc(100vh - 112px);
   max-height: calc(100vh - 112px);
   
   /* サイドバー内の項目が増えた場合のみサイドバー内をスクロールさせる */

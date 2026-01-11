@@ -2,7 +2,7 @@ import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
 // カテゴリー詳細APIのレスポンスの型
-export type CategoryResponse = {
+export type CategoryIndexResponse = {
   category: {
     id: number
     name: string
@@ -27,7 +27,7 @@ export async function GET(
       return NextResponse.json({ message: "Category not found" }, { status: 404 })
     }
 
-    return NextResponse.json<CategoryResponse>({ category }, { status: 200 })
+    return NextResponse.json<CategoryIndexResponse>({ category }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ message: error.message }, { status: 400 })

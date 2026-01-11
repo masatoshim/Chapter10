@@ -1,7 +1,7 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 
-// 投稿APIのレスポンスの型
+// 記事APIのレスポンスの型
 export type PostIndexResponse = {
   post: {
     id: number

@@ -10,7 +10,7 @@ export default function DetailPage() {
   const { post, fetched, error } = usePost(id);
 
   if (!fetched) return <div>読み込み中...</div>;
-  if (!post) return <div>投稿が見つかりません</div>;
+  if (!post) return <div>記事が見つかりません</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (

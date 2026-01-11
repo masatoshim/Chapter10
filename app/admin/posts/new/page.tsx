@@ -2,42 +2,26 @@
 
 import { useState, useEffect, useRef } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
-import { useParams, useRouter } from 'next/navigation';
-import { useGetPost } from '@/app/admin/_hooks/useGetPost';
-import { useUpdatePost } from '@/app/admin/_hooks/useUpdatePost';
+import { useRouter } from 'next/navigation';
 import { useGetCategories } from '@/app/admin/_hooks/useGetCategories';
-import { useDeletePost } from '../../_hooks/useDeletePost';
+import { useCreatePost } from '@/app/admin/_hooks/useCreatePost';
 
-export default function AdminEditPage() {
+export default function AdminCreatePage() {
   // 画面表示用フック
-  const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  // 入力値管理用フック
+  // 記事情報操作用フック
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
-  // 記事情報操作用フック
-  const { post, fetched: postFetched, error: postError } = useGetPost(id);
   const { categories, fetched: catFetched } = useGetCategories();
-  const { updatePost, isUpdating } = useUpdatePost(id);
-  const { deletePost, isDeleting } = useDeletePost(id);
-
-  // 初期値セット
-  useEffect(() => {
-    if (post) {
-      setTitle(post.title);
-      setContent(post.content);
-      setThumbnailUrl(post.thumbnailUrl);
-      setSelectedCategoryIds(post.postCategories.map((pc) => pc.category.id));
-    }
-  }, [post]);
-
-  // カテゴリーのドロップダウンの外側クリックで閉じる処理
+  const { createPost, isCreating } = useCreatePost();
+  
+  // ドロップダウン外クリックで閉じる
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -63,60 +47,37 @@ export default function AdminEditPage() {
     .map((c) => c.name)
     .join(', ');
 
-  // 更新処理
-  const handleUpdate = async () => {
+  // 登録処理
+  const handleCreate = async () => {
     if (!title.trim()) return alert("タイトルを入力してください");
-    if (!window.confirm("この記事を更新してもよろしいですか？")) {
-      return;
-    }
-    const result = await updatePost({
+    if (!window.confirm("この記事を公開してもよろしいですか？")) return;
+    const result = await createPost({
       title,
       content,
       thumbnailUrl,
       categoryIds: selectedCategoryIds,
     });
     if (result.success) {
-      setToastMessage('記事を更新しました');
-      setShowToast(true);
-      router.refresh(); 
-      setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
-    } else {
-      alert(`更新に失敗しました: ${result.error}`);
-    }
-  };
-
-  // 削除処理
-  const handleDelete = async () => {
-    if (!window.confirm("この記事を削除してもよろしいですか？\nこの操作は取り消せません。")) {
-      return;
-    }
-    const result = await deletePost();
-    if (result.success) {
-      setToastMessage('記事を削除しました');
+      setToastMessage('記事を作成しました');
       setShowToast(true);
       setTimeout(() => {
         router.push('/admin/posts');
+        router.refresh();
       }, 1500);
     } else {
-      alert(`削除に失敗しました: ${result.error}`);
+      alert(`作成に失敗しました: ${result.error}`);
     }
   };
 
-  if (!postFetched || !catFetched) return <div>読み込み中...</div>;
-  if (postError) return <div>Error: {postError}</div>;
-  if (!post) return <div>記事が見つかりません</div>;
+  // カテゴリー取得中のみローディング表示
+  if (!catFetched) return <div>カテゴリー読み込み中...</div>;
 
   return (
     <div className={classes.adminContainer}>
-      {showToast && (
-        <div className={classes.toast}>
-          {toastMessage}
-        </div>
-      )}
+      {showToast && <div className={classes.toast}>{toastMessage}</div>}
+      
       <header className={classes.header}>
-        <h1 className={classes.title}>記事編集</h1>
+        <h1 className={classes.title}>記事新規作成</h1>
       </header>
 
       <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
@@ -124,6 +85,7 @@ export default function AdminEditPage() {
           <label>タイトル</label>
           <input 
             type="text" 
+            placeholder="記事のタイトルを入力"
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
           />
@@ -133,6 +95,7 @@ export default function AdminEditPage() {
           <label>サムネイルURL</label>
           <input 
             type="text" 
+            placeholder="https://example.com/image.jpg"
             value={thumbnailUrl} 
             onChange={(e) => setThumbnailUrl(e.target.value)} 
           />
@@ -142,6 +105,7 @@ export default function AdminEditPage() {
           <label>内容</label>
           <textarea 
             rows={10} 
+            placeholder="本文を入力してください"
             value={content} 
             onChange={(e) => setContent(e.target.value)} 
           />
@@ -150,10 +114,7 @@ export default function AdminEditPage() {
         <div className={classes.field}>
           <label>カテゴリー</label>
           <div className={classes.customSelect} ref={dropdownRef}>
-            <div 
-              className={classes.selectDisplay} 
-              onClick={() => setIsOpen(!isOpen)}
-            >
+            <div className={classes.selectDisplay} onClick={() => setIsOpen(!isOpen)}>
               {selectedCategoryNames || "カテゴリーを選択してください"}
               <span className={classes.arrow}>{isOpen ? '▲' : '▼'}</span>
             </div>
@@ -168,11 +129,7 @@ export default function AdminEditPage() {
                       className={`${classes.optionItem} ${isChecked ? classes.selected : ''}`}
                       onClick={() => toggleCategory(category.id)}
                     >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        readOnly 
-                      />
+                      <input type="checkbox" checked={isChecked} readOnly />
                       <span className={classes.optionName}>{category.name}</span>
                     </li>
                   );
@@ -186,18 +143,17 @@ export default function AdminEditPage() {
           <button 
             type="button" 
             className={classes.updateBtn}
-            onClick={handleUpdate}
-            disabled={isUpdating}
+            onClick={handleCreate}
+            disabled={isCreating}
           >
-            {isUpdating ? "更新中..." : "更新"}
+            {isCreating ? "作成中..." : "作成"}
           </button>
           <button 
             type="button" 
             className={classes.deleteBtn}
-            onClick={handleDelete}
-            disabled={isDeleting}
+            onClick={() => router.back()}
           >
-            {isDeleting ? "削除中..." : "削除"}
+            キャンセル
           </button>
         </div>
       </form>
