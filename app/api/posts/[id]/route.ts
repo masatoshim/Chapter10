@@ -1,24 +1,8 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
+import { PostIndexResponse } from '@/app/_types'
 
-// 記事APIのレスポンスの型
-export interface PostIndexResponse {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    thumbnailUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-    postCategories: {
-      category: {
-        id: number;
-        name: string;
-      };
-    }[];
-  } | null;
-}
-
+// 記事取得
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -32,13 +16,12 @@ export async function GET(
         postCategories: {
           include: {
             category: {
-              select: { id: true, name: true },
+              select: { id: true, name: true, createdAt: true, updatedAt: true },
             },
           },
         },
       },
     });
-
     if (!post) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }

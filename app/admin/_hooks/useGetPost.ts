@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { PostIndexResponse } from '@/app/api/admin/posts/[id]/route'
-import { fetchAdminPost } from "@/app/admin/_libs/admin-api";
+import { PostIndexResponse } from '@/app/_types'
+import { fetchAdminPost } from "@/app/admin/_libs/admin-post-api";
 
 export const useGetPost = (id: string) => {
   const [post, setPost] = useState<PostIndexResponse['post'] | null>(null);
@@ -14,6 +14,5 @@ export const useGetPost = (id: string) => {
       .catch(err => setError(err.message))
       .finally(() => setFetched(true));
   }, [id]);
-
   return { post, fetched, error };
 }

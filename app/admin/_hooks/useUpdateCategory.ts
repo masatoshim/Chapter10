@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { updateAdminCategory } from "@/app/admin/_libs/admin-api";
-import { UpdateCategoryRequestBody } from '@/app/api/admin/categories/[id]/route';
+import { CategoryMutationPayload } from '@/app/_types'
+import { updateAdminCategory } from "@/app/admin/_libs/admin-category-api";
 
 export const useUpdateCategory = (id: string) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateCategory = async (payload: UpdateCategoryRequestBody) => {
+  const updateCategory = async (payload: CategoryMutationPayload) => {
     setIsUpdating(true);
     setError(null);
     try {

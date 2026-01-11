@@ -1,16 +1,8 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
+import { CategoryIndexResponse, CategoryMutationPayload } from '@/app/_types'
 
-// カテゴリー詳細APIのレスポンスの型
-export interface CategoryIndexResponse {
-  category: {
-    id: number;
-    name: string;
-    createdAt: Date;
-    updatedAt: Date;
-  } | null;
-}
-
+// カテゴリー取得
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -18,15 +10,12 @@ export async function GET(
   try {
     const { id: idStr } = await params;
     const id = Number(idStr);
-
     const category = await prisma.category.findUnique({
       where: { id },
     })
-
     if (!category) {
       return NextResponse.json({ message: "Category not found" }, { status: 404 })
     }
-
     return NextResponse.json<CategoryIndexResponse>({ category }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {
@@ -35,33 +24,25 @@ export async function GET(
   }
 }
 
-// カテゴリーの更新時に送られてくるリクエストのbodyの型
-export interface UpdateCategoryRequestBody {
-  name: string;
-}
-
+// カテゴリー更新
 export const PUT = async (
   request: Request,
   { params }: { params: Promise<{ id: string }> },
-
 ) => {
   try {
     const { id: idStr } = await params;
     const id = Number(idStr);
     const body = await request.json()
-    const { name }: UpdateCategoryRequestBody = body
-
+    const { name }: CategoryMutationPayload = body
     if (!name) {
       return NextResponse.json({ message: "カテゴリー名は必須です" }, { status: 400 })
     }
-
     const category = await prisma.category.update({
       where: { id },
       data: {
         name,
       },
     })
-
     return NextResponse.json({ message: "OK", category }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {
@@ -70,21 +51,19 @@ export const PUT = async (
   }
 }
 
+// カテゴリー削除
 export const DELETE = async (
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
-
 ) => {
   try {
     const { id: idStr } = await params;
     const id = Number(idStr);
-
     // カテゴリーの削除を実行
     // ※ onDelete: Cascade により、PostCategory の紐付けレコードも自動削除される
     const category = await prisma.category.delete({
       where: { id },
     })
-
     return NextResponse.json({ message: "OK", category }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PostsIndexResponse } from '@/app/api/posts/route'
+import { PostsIndexResponse } from '@/app/_types'
 import { fetchPosts } from "@/app/_libs/getters";
 
 export const usePosts = () => {
@@ -7,7 +7,6 @@ export const usePosts = () => {
   const [fetched, setFetched] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  // APIでpostsを取得する処理をuseEffectで実行
   useEffect(() => {
     setFetched(false);
     fetchPosts()
@@ -17,6 +16,5 @@ export const usePosts = () => {
       .catch(err => setError(err.message))
       .finally(() => setFetched(true));
   }, []);
-
   return { posts, fetched, error }
 }

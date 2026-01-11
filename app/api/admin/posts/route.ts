@@ -1,24 +1,8 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
+import { PostsIndexResponse, PostMutationPayload, CreatePostResponse } from '@/app/_types'
 
-// 記事一覧APIのレスポンスの型
-export interface PostsIndexResponse {
-  posts: {
-    id: number;
-    title: string;
-    content: string;
-    thumbnailUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-    postCategories: {
-      category: {
-        id: number;
-        name: string;
-      };
-    }[];
-  }[];
-}
-
+// 記事一覧取得
 export const GET = async () => {
   try {
     const posts = await prisma.post.findMany({
@@ -26,10 +10,7 @@ export const GET = async () => {
         postCategories: {
           include: {
             category: {
-              select: {
-                id: true,
-                name: true,
-              },
+              select: { id: true, name: true, createdAt: true, updatedAt: true },
             },
           },
         },
@@ -38,7 +19,6 @@ export const GET = async () => {
         createdAt: 'desc',
       },
     })
-
     return NextResponse.json<PostsIndexResponse>({ posts }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)
@@ -46,24 +26,11 @@ export const GET = async () => {
   }
 }
 
-// 記事作成時に送られてくるリクエストのbodyの型
-export interface CreatePostRequestBody {
-  title: string;
-  content: string;
-  categoryIds: number[];
-  thumbnailUrl: string;
-}
-
-// 記事作成APIのレスポンスの型
-export interface CreatePostResponse {
-  id: number;
-}
-
+// 記事登録
 export const POST = async (request: Request) => {
   try {
-    const body: CreatePostRequestBody  = await request.json()
+    const body: PostMutationPayload  = await request.json()
     const { title, content, thumbnailUrl, categoryIds } = body
-
     const post = await prisma.post.create({
       data: {
         title,
@@ -76,11 +43,9 @@ export const POST = async (request: Request) => {
         },
       },
     })
-
     return NextResponse.json<CreatePostResponse>({
       id: post.id,
     })
-
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ message: error.message }, { status: 400 })

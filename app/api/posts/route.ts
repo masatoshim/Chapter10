@@ -1,23 +1,6 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
-
-// 記事一覧APIのレスポンスの型
-export interface PostsIndexResponse {
-  posts: {
-    id: number;
-    title: string;
-    content: string;
-    thumbnailUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-    postCategories: {
-      category: {
-        id: number;
-        name: string;
-      };
-    }[];
-  }[];
-}
+import { PostsIndexResponse } from '@/app/_types'
 
 export const GET = async () => {
   try {
@@ -26,10 +9,7 @@ export const GET = async () => {
         postCategories: {
           include: {
             category: {
-              select: {
-                id: true,
-                name: true,
-              },
+              select: { id: true, name: true, createdAt: true, updatedAt: true },
             },
           },
         },

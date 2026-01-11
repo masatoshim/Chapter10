@@ -1,24 +1,8 @@
 import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
+import { PostIndexResponse, PostMutationPayload, PostUpdateResponse } from '@/app/_types'
 
-// 記事APIのレスポンスの型
-export interface PostIndexResponse {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    thumbnailUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-    postCategories: {
-      category: {
-        id: number;
-        name: string;
-      };
-    }[];
-  } | null;
-}
-
+// 記事取得
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -32,13 +16,12 @@ export async function GET(
         postCategories: {
           include: {
             category: {
-              select: { id: true, name: true },
+              select: { id: true, name: true, createdAt: true, updatedAt: true },
             },
           },
         },
       },
     });
-
     if (!post) {
       return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
@@ -49,19 +32,7 @@ export async function GET(
   }
 }
 
-// 記事の更新時に送られてくるリクエストのbodyの型
-export interface UpdatePostRequestBody {
-  title: string;
-  content: string;
-  categoryIds: number[];
-  thumbnailUrl: string;
-}
-
-export interface PostUpdateResponse {
-  message: string;
-  post: any;
-}
-
+// 記事更新
 export const PUT = async (
   request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -70,8 +41,7 @@ export const PUT = async (
     const { id: idStr } = await params;
     const id = Number(idStr);
     const body = await request.json()
-    const { title, content, thumbnailUrl, categoryIds }: UpdatePostRequestBody = body
-
+    const { title, content, thumbnailUrl, categoryIds }: PostMutationPayload = body
     const post = await prisma.post.update({
       where: { id },
       data: {
@@ -94,7 +64,6 @@ export const PUT = async (
         },
       },
     })
-
     return NextResponse.json<PostUpdateResponse>({ message: "OK", post }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {
@@ -103,6 +72,7 @@ export const PUT = async (
   }
 }
 
+// 記事削除
 export const DELETE = async (
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -110,13 +80,11 @@ export const DELETE = async (
   try {
     const { id: idStr } = await params;
     const id = Number(idStr);
-
     // データベースから削除を実行
     // ※ onDelete: Cascade の設定により、紐づく PostCategory も自動削除
     const post = await prisma.post.delete({
       where: { id },
     })
-
     return NextResponse.json({ message: "OK", post }, { status: 200 })
   } catch (error) {
     if (error instanceof Error) {

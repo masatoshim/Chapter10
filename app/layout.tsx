@@ -1,5 +1,5 @@
 import './App.css';
-import { LayoutProps } from '@/app/_types/LayoutProps';
+import { LayoutProps } from '@/app/_types'
 import Link from "next/link";
 
 export default function RootLayout({ children }: LayoutProps) {

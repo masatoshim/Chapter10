@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { createAdminPost } from '@/app/admin/_libs/admin-api';
-import { CreatePostRequestBody } from '@/app/api/admin/posts/route';
+import { PostMutationPayload } from '@/app/_types'
+import { createAdminPost } from '@/app/admin/_libs/admin-post-api';
 
 export const useCreatePost = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createPost = async (payload: CreatePostRequestBody) => {
+  const createPost = async (payload: PostMutationPayload) => {
     setIsCreating(true);
     setError(null);
     try {

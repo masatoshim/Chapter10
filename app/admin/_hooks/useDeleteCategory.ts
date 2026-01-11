@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { deleteAdminCategory } from '@/app/admin/_libs/admin-api';
+import { deleteAdminCategory } from '@/app/admin/_libs/admin-category-api';
 
 export const useDeleteCategory = (id: string) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -19,6 +19,5 @@ export const useDeleteCategory = (id: string) => {
       setIsDeleting(false);
     }
   };
-
   return { deleteCategory, isDeleting, error };
 };

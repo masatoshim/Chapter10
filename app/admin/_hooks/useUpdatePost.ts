@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { updateAdminPost } from '@/app/admin/_libs/admin-api';
-import { UpdatePostRequestBody } from '@/app/api/admin/posts/[id]/route';
+import { PostMutationPayload } from '@/app/_types'
+import { updateAdminPost } from '@/app/admin/_libs/admin-post-api';
 
 export const useUpdatePost = (id: string) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updatePost = async (payload: UpdatePostRequestBody) => {
+  const updatePost = async (payload: PostMutationPayload) => {
     setIsUpdating(true);
     setError(null);
     try {

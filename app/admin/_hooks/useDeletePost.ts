@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { deleteAdminPost } from '@/app/admin/_libs/admin-api';
+import { deleteAdminPost } from '@/app/admin/_libs/admin-post-api';
 
 export const useDeletePost = (id: string) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -19,6 +19,5 @@ export const useDeletePost = (id: string) => {
       setIsDeleting(false);
     }
   };
-
   return { deletePost, isDeleting, error };
 };

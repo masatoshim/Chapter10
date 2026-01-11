@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { CategoriesIndexResponse } from '@/app/api/admin/categories/route';
-import { fetchAdminCategories } from "@/app/admin/_libs/admin-api";
+import { CategoriesIndexResponse } from '@/app/_types'
+import { fetchAdminCategories } from "@/app/admin/_libs/admin-category-api";
 
 export const useGetCategories = () => {
   const [categories, setCategories] = useState<CategoriesIndexResponse['categories']>([]);;
@@ -14,6 +14,5 @@ export const useGetCategories = () => {
       .catch(err => setError(err.message))
       .finally(() => setFetched(true));
   }, []);
-
   return { categories, fetched, error }
 }

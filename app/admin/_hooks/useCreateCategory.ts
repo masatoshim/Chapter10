@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { createAdminCategory } from '@/app/admin/_libs/admin-api';
-import { CreateCategoryRequestBody } from '@/app/api/admin/categories/route';
+import { CategoryMutationPayload } from '@/app/_types'
+import { createAdminCategory } from '@/app/admin/_libs/admin-category-api';
 
 export const useCreateCategory = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createCategory = async (payload: CreateCategoryRequestBody) => {
+  const createCategory = async (payload: CategoryMutationPayload) => {
     setIsCreating(true);
     setError(null);
     try {
