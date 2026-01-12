@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PostIndexResponse } from '@/app/_types'
-import { fetchPost } from "@/app/_libs/getters";
+import { fetchPost } from "@/app/_libs/user-post-api";
 
 export const usePost = (id: string) => {
   const [post, setPost] = useState<PostIndexResponse['post'] | null>(null);

@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
+import { CategoryForm } from '@/app/admin/_components/CategoryForm';
 import { useParams, useRouter } from 'next/navigation';
-import { useGetCategory } from '@/app/admin/_hooks/useGetCategory';
-import { useUpdateCategory } from '@/app/admin/_hooks/useUpdateCategory';
-import { useDeleteCategory } from '../../_hooks/useDeleteCategory';
+import { useGetCategory, useUpdateCategory, useDeleteCategory } from '@/app/admin/_hooks';
 
 export default function CategoryEditPage() {
   // 画面表示用フック
@@ -17,7 +16,7 @@ export default function CategoryEditPage() {
   const { id } = useParams<{ id: string }>();
   const { category, fetched } = useGetCategory(id);
   const { updateCategory, isUpdating } = useUpdateCategory(id);
-  const { deleteCategory, isDeleting } = useDeleteCategory(id);
+  const { deleteCategory } = useDeleteCategory(id);
 
   // 初期値セット
   useEffect(() => {
@@ -68,35 +67,14 @@ export default function CategoryEditPage() {
         <h1 className={classes.title}>カテゴリー編集</h1>
       </header>
 
-      <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
-        <div className={classes.field}>
-          <label>カテゴリー名</label>
-          <input 
-            type="text" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-          />
-        </div>
-
-        <div className={classes.actionButtons}>
-          <button 
-            type="button" 
-            className={classes.updateBtn}
-            onClick={handleUpdate}
-            disabled={isUpdating}
-          >
-            {isUpdating ? "更新中..." : "更新"}
-          </button>
-          <button 
-            type="button" 
-            className={classes.deleteBtn}
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "削除中..." : "削除"}
-          </button>
-        </div>
-      </form>
+      <CategoryForm 
+        mode="edit"
+        name={name}
+        setName={setName}
+        onSubmit={handleUpdate}
+        onDelete={handleDelete}
+        isLoading={isUpdating}
+      />
     </div>
   );
 }

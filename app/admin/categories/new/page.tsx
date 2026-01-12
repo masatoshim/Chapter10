@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
+import { CategoryForm } from '@/app/admin/_components/CategoryForm';
 import { useRouter } from 'next/navigation';
-import { useCreateCategory } from '@/app/admin/_hooks/useCreateCategory';
+import { useCreateCategory } from '@/app/admin/_hooks';
 
 export default function CategoryCreatePage() {
   // 画面表示用フック
@@ -36,35 +37,13 @@ export default function CategoryCreatePage() {
         <h1 className={classes.title}>カテゴリー新規作成</h1>
       </header>
 
-      <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
-        <div className={classes.field}>
-          <label>カテゴリー名</label>
-          <input 
-            type="text" 
-            placeholder="例: プログラミング, 日記など"
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-          />
-        </div>
-
-        <div className={classes.actionButtons}>
-          <button 
-            type="button" 
-            className={classes.updateBtn}
-            onClick={handleCreate}
-            disabled={isCreating}
-          >
-            {isCreating ? "作成中..." : "作成"}
-          </button>
-          <button 
-            type="button" 
-            className={classes.deleteBtn}
-            onClick={() => router.back()}
-          >
-            キャンセル
-          </button>
-        </div>
-      </form>
+      <CategoryForm 
+        mode="create"
+        name={name}
+        setName={setName}
+        onSubmit={handleCreate}
+        isLoading={isCreating}
+      />
     </div>
   );
 }

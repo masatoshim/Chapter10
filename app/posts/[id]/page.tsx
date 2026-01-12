@@ -3,7 +3,7 @@
 import classes from '@/app/_styles/Detail.module.scss'
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import { usePost } from '@/app/_hooks/usePost';
+import { usePost } from '@/app/_hooks';
 
 export default function DetailPage() {
   const { id } = useParams<{ id: string }>();

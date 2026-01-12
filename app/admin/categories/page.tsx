@@ -2,7 +2,7 @@
 
 import classes from '@/app/admin/_styles/AdminList.module.scss'
 import Link from "next/link";
-import { useGetCategories } from '../_hooks/useGetCategories';
+import { useGetCategories } from '@/app/admin/_hooks';
 
 export default function CategoryListPage() {
   const { categories, fetched, error } = useGetCategories();

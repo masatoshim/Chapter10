@@ -2,7 +2,7 @@
 
 import classes from '@/app/admin/_styles/AdminList.module.scss'
 import Link from "next/link";
-import { useGetPosts } from '@/app/admin/_hooks/useGetPosts';
+import { useGetPosts } from '@/app/admin/_hooks';
 
 export default function AdminPostListPage() {
   const { posts, fetched, error } = useGetPosts();

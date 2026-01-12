@@ -178,3 +178,11 @@
     transform: translate(-50%, -20px); 
   }
 }
+
+/* ブラウザごとの微細な挙動を抑える */
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}

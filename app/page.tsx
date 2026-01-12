@@ -2,7 +2,7 @@
 
 import classes from '@/app/_styles/Home.module.scss'
 import Link from "next/link";
-import { usePosts } from '@/app/_hooks/usePosts';
+import { usePosts } from '@/app/_hooks';
 
 export default function HomePage() {
   const { posts, fetched, error } = usePosts();

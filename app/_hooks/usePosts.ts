@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PostsIndexResponse } from '@/app/_types'
-import { fetchPosts } from "@/app/_libs/getters";
+import { fetchPosts } from "@/app/_libs/user-post-api";
 
 export const usePosts = () => {
   const [posts, setPosts] = useState<PostsIndexResponse['posts']>([]);;

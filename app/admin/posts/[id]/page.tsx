@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
+import { PostForm } from '@/app/admin/_components/PostForm';
 import { useParams, useRouter } from 'next/navigation';
-import { useGetPost } from '@/app/admin/_hooks/useGetPost';
-import { useUpdatePost } from '@/app/admin/_hooks/useUpdatePost';
-import { useGetCategories } from '@/app/admin/_hooks/useGetCategories';
-import { useDeletePost } from '../../_hooks/useDeletePost';
+import { useGetPost, useUpdatePost, useGetCategories, useDeletePost } from '@/app/admin/_hooks';
 
 export default function AdminEditPage() {
   // 画面表示用フック
@@ -14,8 +12,6 @@ export default function AdminEditPage() {
   const router = useRouter();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   // 入力値管理用フック
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -25,7 +21,7 @@ export default function AdminEditPage() {
   const { post, fetched: postFetched, error: postError } = useGetPost(id);
   const { categories, fetched: catFetched } = useGetCategories();
   const { updatePost, isUpdating } = useUpdatePost(id);
-  const { deletePost, isDeleting } = useDeletePost(id);
+  const { deletePost } = useDeletePost(id);
 
   // 初期値セット
   useEffect(() => {
@@ -37,17 +33,6 @@ export default function AdminEditPage() {
     }
   }, [post]);
 
-  // カテゴリーのドロップダウンの外側クリックで閉じる処理
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   // カテゴリーのトグル処理
   const toggleCategory = (categoryId: number) => {
     setSelectedCategoryIds((prev) =>
@@ -56,12 +41,6 @@ export default function AdminEditPage() {
         : [...prev, categoryId]
     );
   };
-
-  // カテゴリーの名称取得
-  const selectedCategoryNames = categories
-    .filter((c) => selectedCategoryIds.includes(c.id))
-    .map((c) => c.name)
-    .join(', ');
 
   // 更新処理
   const handleUpdate = async () => {
@@ -119,88 +98,21 @@ export default function AdminEditPage() {
         <h1 className={classes.title}>記事編集</h1>
       </header>
 
-      <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
-        <div className={classes.field}>
-          <label>タイトル</label>
-          <input 
-            type="text" 
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)} 
-          />
-        </div>
-
-        <div className={classes.field}>
-          <label>サムネイルURL</label>
-          <input 
-            type="text" 
-            value={thumbnailUrl} 
-            onChange={(e) => setThumbnailUrl(e.target.value)} 
-          />
-        </div>
-
-        <div className={classes.field}>
-          <label>内容</label>
-          <textarea 
-            rows={10} 
-            value={content} 
-            onChange={(e) => setContent(e.target.value)} 
-          />
-        </div>
-
-        <div className={classes.field}>
-          <label>カテゴリー</label>
-          <div className={classes.customSelect} ref={dropdownRef}>
-            <div 
-              className={classes.selectDisplay} 
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {selectedCategoryNames || "カテゴリーを選択してください"}
-              <span className={classes.arrow}>{isOpen ? '▲' : '▼'}</span>
-            </div>
-
-            {isOpen && (
-              <ul className={classes.optionsList}>
-                {categories.map((category) => {
-                  const isChecked = selectedCategoryIds.includes(category.id);
-                  return (
-                    <li 
-                      key={category.id} 
-                      className={`${classes.optionItem} ${isChecked ? classes.selected : ''}`}
-                      onClick={() => toggleCategory(category.id)}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        readOnly 
-                      />
-                      <span className={classes.optionName}>{category.name}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-        </div>
-
-        <div className={classes.actionButtons}>
-          <button 
-            type="button" 
-            className={classes.updateBtn}
-            onClick={handleUpdate}
-            disabled={isUpdating}
-          >
-            {isUpdating ? "更新中..." : "更新"}
-          </button>
-          <button 
-            type="button" 
-            className={classes.deleteBtn}
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "削除中..." : "削除"}
-          </button>
-        </div>
-      </form>
+      <PostForm
+        mode="edit"
+        title={title}
+        setTitle={setTitle}
+        content={content}
+        setContent={setContent}
+        thumbnailUrl={thumbnailUrl}
+        setThumbnailUrl={setThumbnailUrl}
+        selectedCategoryIds={selectedCategoryIds}
+        toggleCategory={toggleCategory}
+        categories={categories}
+        onSubmit={handleUpdate}
+        onDelete={handleDelete}
+        isLoading={isUpdating}
+      />
     </div>
   );
 }
