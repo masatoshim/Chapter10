@@ -4,7 +4,7 @@ import { useState } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
 import { PostForm } from '@/app/admin/_components/PostForm';
 import { useRouter } from 'next/navigation';
-import { useGetCategories, useCreatePost } from '@/app/admin/_hooks';
+import { useCreatePost } from '@/app/admin/_hooks';
 
 export default function AdminCreatePage() {
   // 画面表示用フック

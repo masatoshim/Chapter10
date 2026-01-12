@@ -2,6 +2,7 @@ import { prisma } from '@/app/_libs/prisma'
 import { NextResponse } from 'next/server'
 import { PostsIndexResponse } from '@/app/_types'
 
+// 記事一覧取得
 export const GET = async () => {
   try {
     const posts = await prisma.post.findMany({

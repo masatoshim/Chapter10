@@ -3,8 +3,7 @@
 import classes from '@/app/contact/_styles/Contact.module.scss'
 import { useForm, UseFormReturn  } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserSchemaType } from '@/app/contact/_types/UserSchemaType';
-import { Contact } from '@/app/contact/_types/Contact';
+import { UserSchemaType, Contact } from '@/app/contact/_types';
 import { z } from 'zod';
 
 export default function ContactPage() {

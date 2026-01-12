@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
 import { useRouter } from 'next/navigation';
 import { useGetCategories } from '@/app/admin/_hooks';
-import { Category } from '@/app/_types';
 
 interface PostFormProps {
   mode: 'create' | 'edit';
@@ -27,7 +26,6 @@ export const PostForm = (props: PostFormProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { categories, fetched: catFetched } = useGetCategories();
   
-
   // ドロップダウン外クリック制御
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
