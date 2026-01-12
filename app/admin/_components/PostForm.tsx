@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import classes from '@/app/admin/_styles/AdminEdit.module.scss';
 import { useRouter } from 'next/navigation';
+import { useGetCategories } from '@/app/admin/_hooks';
 import { Category } from '@/app/_types';
 
 interface PostFormProps {
@@ -15,7 +16,6 @@ interface PostFormProps {
   setThumbnailUrl: (v: string) => void;
   selectedCategoryIds: number[];
   toggleCategory: (id: number) => void;
-  categories: Category[];
   onSubmit: () => void;
   onDelete?: () => void;
   isLoading: boolean;
@@ -25,6 +25,8 @@ export const PostForm = (props: PostFormProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { categories, fetched: catFetched } = useGetCategories();
+  
 
   // ドロップダウン外クリック制御
   useEffect(() => {
@@ -37,7 +39,7 @@ export const PostForm = (props: PostFormProps) => {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const selectedCategoryNames = props.categories
+  const selectedCategoryNames = categories
     .filter((c) => props.selectedCategoryIds.includes(c.id))
     .map((c) => c.name)
     .join(', ');
@@ -79,13 +81,13 @@ export const PostForm = (props: PostFormProps) => {
           <label>カテゴリー</label>
           <div className={classes.customSelect} ref={dropdownRef}>
             <div className={classes.selectDisplay} onClick={() => setIsOpen(!isOpen)}>
-              {selectedCategoryNames || "カテゴリーを選択してください"}
+              {catFetched ? selectedCategoryNames || "カテゴリーを選択してください" : "読み込み中..."}
               <span className={classes.arrow}>{isOpen ? '▲' : '▼'}</span>
             </div>
 
             {isOpen && (
               <ul className={classes.optionsList}>
-                {props.categories.map((category) => {
+                {categories.map((category) => {
                   const isChecked = props.selectedCategoryIds.includes(category.id);
                   return (
                     <li 

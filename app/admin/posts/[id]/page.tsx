@@ -19,7 +19,6 @@ export default function AdminEditPage() {
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
   // 記事情報操作用フック
   const { post, fetched: postFetched, error: postError } = useGetPost(id);
-  const { categories, fetched: catFetched } = useGetCategories();
   const { updatePost, isUpdating } = useUpdatePost(id);
   const { deletePost } = useDeletePost(id);
 
@@ -83,7 +82,7 @@ export default function AdminEditPage() {
     }
   };
 
-  if (!postFetched || !catFetched) return <div>読み込み中...</div>;
+  if (!postFetched) return <div>読み込み中...</div>;
   if (postError) return <div>Error: {postError}</div>;
   if (!post) return <div>記事が見つかりません</div>;
 
@@ -108,7 +107,6 @@ export default function AdminEditPage() {
         setThumbnailUrl={setThumbnailUrl}
         selectedCategoryIds={selectedCategoryIds}
         toggleCategory={toggleCategory}
-        categories={categories}
         onSubmit={handleUpdate}
         onDelete={handleDelete}
         isLoading={isUpdating}

@@ -16,7 +16,6 @@ export default function AdminCreatePage() {
   const [content, setContent] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
-  const { categories, fetched: catFetched } = useGetCategories();
   const { createPost, isCreating } = useCreatePost();
 
   // カテゴリーのトグル処理
@@ -50,9 +49,6 @@ export default function AdminCreatePage() {
     }
   };
 
-  // カテゴリー取得中のみローディング表示
-  if (!catFetched) return <div>カテゴリー読み込み中...</div>;
-
   return (
     <div className={classes.adminContainer}>
       {showToast && <div className={classes.toast}>{toastMessage}</div>}
@@ -71,7 +67,6 @@ export default function AdminCreatePage() {
         setThumbnailUrl={setThumbnailUrl}
         selectedCategoryIds={selectedCategoryIds}
         toggleCategory={toggleCategory}
-        categories={categories}
         onSubmit={handleCreate}
         isLoading={isCreating}
       />
