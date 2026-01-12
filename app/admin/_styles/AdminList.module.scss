@@ -1,0 +1,72 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #eee;
+}
+
+.createBtn {
+  display: inline-block;
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s, transform 0.1s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #333333;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.contentList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  // 縦に並べるために flex-direction を column に設定
+  display: flex;
+  flex-direction: column;
+
+  li {
+    // li要素の下に線を引き、余白を調整
+    border-bottom: 1px solid #eee;
+    a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      padding: 16px 8px;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column; // 縦に並べる
+  gap: 2px;
+}
+
+.contentTitle {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.contentDate {
+  font-size: 0.85rem;
+  color: #888;
+}
