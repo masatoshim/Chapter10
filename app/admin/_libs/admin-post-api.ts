@@ -2,7 +2,7 @@ import { PostsIndexResponse, PostIndexResponse, PostMutationPayload, PostUpdateR
 
 // 記事リストを取得する関数（管理者用）
 export const fetchAdminPosts: () => Promise<PostsIndexResponse> = async () => {
-  const res: Response = await fetch('http://localhost:3000/api/admin/posts')
+  const res: Response = await fetch('/api/admin/posts')
   if (!res.ok) throw new Error(res.statusText);
   return await res.json() as PostsIndexResponse;
 };
@@ -10,7 +10,7 @@ export const fetchAdminPosts: () => Promise<PostsIndexResponse> = async () => {
 // 記事を取得する関数（管理者用）
 export const fetchAdminPost: (id: string) => Promise<PostIndexResponse> = async (id) => {
   if (!id) throw new Error("Post ID is required");
-  const res: Response = await fetch(`http://localhost:3000/api/admin/posts/${id}`)
+  const res: Response = await fetch(`/api/admin/posts/${id}`)
   if (!res.ok) throw new Error(res.statusText);
   return await res.json() as PostIndexResponse;
 };
@@ -20,7 +20,7 @@ export const updateAdminPost = async (
   id: string | number, 
   payload: PostMutationPayload
 ): Promise<PostUpdateResponse> => {
-  const res = await fetch(`http://localhost:3000/api/admin/posts/${id}`, {
+  const res = await fetch(`/api/admin/posts/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const updateAdminPost = async (
 
 // 記事を削除する関数
 export const deleteAdminPost = async (id: string | number): Promise<void> => {
-  const res = await fetch(`http://localhost:3000/api/admin/posts/${id}`, {
+  const res = await fetch(`/api/admin/posts/${id}`, {
     method: 'DELETE',
   });
   const data = await res.json();
@@ -43,7 +43,7 @@ export const deleteAdminPost = async (id: string | number): Promise<void> => {
 
 /** 記事を新規作成する関数 */
 export const createAdminPost = async (payload: PostMutationPayload): Promise<CreatePostResponse> => {
-  const res = await fetch(`http://localhost:3000/api/admin/posts`, {
+  const res = await fetch(`/api/admin/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
